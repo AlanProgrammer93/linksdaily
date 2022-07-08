@@ -6,39 +6,37 @@ import SubmitButton from '../components/auth/SubmitButton';
 import axios from 'axios';
 import CircleLogo from '../components/auth/CircleLogo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { API } from '../config';
 
-const Signup = ({ navigation }) => {
-  const [name, setName] = useState('');
+const Signin = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true)
-    if (!name || !email || !password) {
+    if (!email || !password) {
       alert("All fields are required")
       setLoading(false)
       return
     }
     try {
-      const { data } = await axios.post(`${API}/signup`, {
-        name, 
+      const { data } = await axios.post(`${API}/signin`, {
         email, 
         password
       })
 
       if (data.error) {
-        alert(data.error)
+        alert(data.error);
         setLoading(false)
       } else {
         setLoading(false)
-        console.log("SIGN UP SUCCESS => ", data);
-        alert("Sign up successful")
+        console.log("SIGN IN SUCCESS => ", data);
+        alert("Sign in successful")
       }
+      
       //redirect
     } catch (error) {
-      alert("Signup failed, Try again.")
+      alert("Signin failed, Try again.")
       console.log(error);
       setLoading(false)
     }
@@ -53,15 +51,8 @@ const Signup = ({ navigation }) => {
       <View style={{ marginVertical: 100 }}>
         <CircleLogo />
         
-        <Text title center>Sign Up</Text>
+        <Text title center>Sign In</Text>
 
-        <UserInput 
-          name="NAME" 
-          value={name} 
-          setValue={setName} 
-          autoCapitalize="words"
-          autoCorrect={false}
-        />
         <UserInput 
           name="EMAIL" 
           value={email} 
@@ -78,16 +69,20 @@ const Signup = ({ navigation }) => {
         />
 
         <SubmitButton 
-          title="Sign Up" 
+          title="Sign In" 
           handleSubmit={handleSubmit} 
           loading={loading}
         />
 
-        <Text>
-          Already Joined?{" "} 
-          <Text onPress={() => navigation.navigate("Signin")} color="#ff2222">
-            Sign In
+        <Text small center>
+          Not yet registered?{" "} 
+          <Text onPress={() => navigation.navigate("Signup")} color="#ff2222">
+            Sign Up
           </Text>
+        </Text>
+
+        <Text small center color="orange" style={{ marginTop: 10 }}>
+            Forgot Password?
         </Text>
 
         {/* <Text>{JSON.stringify({ name, email, password }, null, 4)}</Text> */}
@@ -96,4 +91,4 @@ const Signup = ({ navigation }) => {
   )
 }
 
-export default Signup
+export default Signin
