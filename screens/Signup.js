@@ -21,6 +21,8 @@ const Signup = ({ navigation }) => {
       setLoading(false)
       return
     }
+    console.log(`${API}/signup`);
+    console.log(name, email, password);
     try {
       const { data } = await axios.post(`${API}/signup`, {
         name, 
