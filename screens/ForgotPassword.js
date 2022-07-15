@@ -9,7 +9,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/auth';
 
-const Signin = ({ navigation }) => {
+const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,33 +18,21 @@ const Signin = ({ navigation }) => {
 
   const handleSubmit = async () => {
     setLoading(true)
-    if (!email || !password) {
-      alert("All fields are required")
-      setLoading(false)
-      return
+    if (!email) {
+        alert("Email is required")
+        setLoading(false)
+        return
     }
     try {
-      const { data } = await axios.post(`/signin`, {
-        email, 
-        password
-      })
-
-      if (data.error) {
-        alert(data.error);
+        const { data } = await axios.post("/forgot-password", {
+            email
+        })
         setLoading(false)
-      } else {
-        setState(data);
-        await AsyncStorage.setItem('@auth', JSON.stringify(data));
-        setLoading(false)
-        console.log("SIGN IN SUCCESS => ", data);
-        alert("Sign in successful")
-
-        navigation.navigate("Home");
-      }
+        console.log("RESET PASSWORD RES => ", data);
+        alert("Enter the password reset code we sent in your email")
     } catch (error) {
-      alert("Signin failed, Try again.")
-      console.log(error);
-      setLoading(false)
+        alert("Error sending email. Try again.")
+        console.log(error);
     }
   }
 
@@ -56,9 +44,9 @@ const Signin = ({ navigation }) => {
     }}>
       <View style={{ marginVertical: 100 }}>
         <CircleLogo />
-        
-        <Text title center>Sign In</Text>
-
+        <Text title center style={{ marginBottom: 50 }}>
+            Forgot Password
+        </Text>
         <UserInput 
           name="EMAIL" 
           value={email} 
@@ -66,31 +54,24 @@ const Signin = ({ navigation }) => {
           autoCompleteType="email"
           keyboardType="email-address"
         />
-        <UserInput 
+        {/* <UserInput 
           name="PASSWORD" 
           value={password} 
           setValue={setPassword} 
           secureTextEntry={true}
           autoCompleteType="password"
-        />
+        /> */}
 
         <SubmitButton 
-          title="Sign In" 
+          title="Request Reset Code" 
           handleSubmit={handleSubmit} 
           loading={loading}
         />
 
-        <Text small center>
-          Not yet registered?{" "} 
-          <Text onPress={() => navigation.navigate("Signup")} color="#ff2222">
-            Sign Up
-          </Text>
-        </Text>
-
         <Text 
-          onPress={() => navigation.navigate("ForgotPassword")} 
+          onPress={() => navigation.navigate("Signin")} 
           small center color="orange" style={{ marginTop: 10 }}>
-            Forgot Password?
+            Sign In
         </Text>
 
         {/* <Text>{JSON.stringify({ name, email, password }, null, 4)}</Text> */}
@@ -99,4 +80,4 @@ const Signin = ({ navigation }) => {
   )
 }
 
-export default Signin
+export default ForgotPassword
