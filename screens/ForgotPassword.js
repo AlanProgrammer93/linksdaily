@@ -13,6 +13,8 @@ const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [resetCode, setResetCode] = useState("");
 
   const [state, setState] = useContext(AuthContext);
 
@@ -27,12 +29,42 @@ const ForgotPassword = ({ navigation }) => {
         const { data } = await axios.post("/forgot-password", {
             email
         })
-        setLoading(false)
-        console.log("RESET PASSWORD RES => ", data);
-        alert("Enter the password reset code we sent in your email")
+
+        if (data.error) {
+          alert(data.error)
+          setLoading(false)
+        } else {
+          setLoading(false)
+          setVisible(true)
+          console.log("RESET PASSWORD RES => ", data);
+          alert("Enter the password reset code we sent in your email")
+        }
     } catch (error) {
         alert("Error sending email. Try again.")
         console.log(error);
+    }
+  }
+
+  const handlePasswordReset = async () => {
+    console.log("HANDLE PASSWORD RESET -> ", email, password, resetCode);
+    try {
+      const { data } = await axios.post('/reset-password', {
+        email,
+        password,
+        resetCode
+      })
+      console.log("RESET PASSWORD => ", data);
+      if (data.error) {
+        alert(data.error)
+        setLoading(false)
+      } else {
+        alert("Now you can login with your new password");
+        navigation.navigate('Signin');
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false)
+      alert('Password reset failed. Try again.')
     }
   }
 
@@ -54,17 +86,31 @@ const ForgotPassword = ({ navigation }) => {
           autoCompleteType="email"
           keyboardType="email-address"
         />
-        {/* <UserInput 
-          name="PASSWORD" 
-          value={password} 
-          setValue={setPassword} 
-          secureTextEntry={true}
-          autoCompleteType="password"
-        /> */}
+        
+        {
+          visible && (
+            <>
+              <UserInput 
+                name="NEW PASSWORD" 
+                value={password} 
+                setValue={setPassword} 
+                secureTextEntry={true}
+                autoCompleteType="password"
+              />
+
+              <UserInput 
+                name="PASSWORD RESET CODE" 
+                value={resetCode} 
+                setValue={setResetCode} 
+                secureTextEntry={true}
+              />
+            </>
+          )
+        }
 
         <SubmitButton 
-          title="Request Reset Code" 
-          handleSubmit={handleSubmit} 
+          title={visible ? "Reset Password" : "Request Reset Code"} 
+          handleSubmit={visible ? handlePasswordReset : handleSubmit} 
           loading={loading}
         />
 

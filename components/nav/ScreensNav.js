@@ -6,9 +6,9 @@ import Home from '../../screens/Home';
 import { AuthContext } from '../../context/auth';
 import HeaderTabs from './HeaderTabs';
 import Account from '../../screens/Account';
-import Post from '../../screens/Post';
 import Links from '../../screens/Links';
 import ForgotPassword from '../../screens/ForgotPassword';
+import PostLink from '../../screens/PostLink';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,12 +41,16 @@ export default function ScreensNav() {
                     }} 
                 />
                 <Stack.Screen 
-                    name="Post" 
-                    component={Post} 
-                />
-                <Stack.Screen 
                     name="Links" 
                     component={Links}  
+                />
+                <Stack.Screen 
+                    name="PostLink" 
+                    component={PostLink}  
+                    options={{
+                        title: "Post",
+                        headerRight: () => <HeaderTabs />
+                    }}
                 />
                 </>
             ) : (
