@@ -3,7 +3,7 @@ import React from 'react'
 import Text from "@kaloraat/react-native-text";
 import FooterTabs from '../components/nav/FooterTabs';
 
-const Links = () => {
+const Post = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Text>
@@ -16,4 +16,4 @@ const Links = () => {
   )
 }
 
-export default Links
+export default Post
