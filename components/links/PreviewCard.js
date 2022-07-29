@@ -10,7 +10,7 @@ import IconSet from './IconSet';
 const PreviewCard = ({
   ogTitle = "Untitled",
   ogDescription = "No description found...",
-  ogImage = "https://via.placeholder.com/500x500.png?text=Image",
+  ogImage = { url: "https://via.placeholder.com/500x500.png?text=Image" },
   handlePress = (f) => f,
   link = {},
   showIcons = false,
@@ -38,6 +38,16 @@ const PreviewCard = ({
     })
   }
 
+  const ogImageUrl = (ogImage) => {
+    if (ogImage?.url) {
+      return ogImage.url;
+    } else if (ogImage?.length > 0) {
+      return ogImage[0].url;
+    } else {
+      return "https://via.placeholder.com/500x500.png?text=Image";
+    }
+  }
+
   return (
     <View style={{
       width: "92%",
@@ -57,10 +67,10 @@ const PreviewCard = ({
           borderTopRightRadius: 14,
           borderTopLeftRadius: 14,
         }}
-        source={{ uri: ogImage.url }}
+        source={{ uri: ogImageUrl(ogImage) }}
       />
 
-      <View style={{ marginBottom: -40 }}>
+      <View style={ showIcons ? { marginBottom: -40 } : {}}>
         <IconSet 
           handleLikePress={handleLikePress}
           handleUnLikePress={handleUnLikePress}

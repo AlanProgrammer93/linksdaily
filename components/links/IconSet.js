@@ -4,6 +4,7 @@ import Text from "@kaloraat/react-native-text";
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     shadow: {
@@ -26,6 +27,8 @@ const IconSet = ({
     link,
     auth
 }) => {
+
+    const navigation = useNavigation();
 
     return (
         <View
@@ -55,7 +58,7 @@ const IconSet = ({
                                         solid 
                                         style={styles.shadow} 
                                     />
-                                    <Text center color="#ff9900">{link.likes.length}</Text>
+                                    <Text center color="#ff9900">{link?.likes?.length}</Text>
                                 </TouchableOpacity>
                             ) : (
                                 <TouchableOpacity
@@ -68,7 +71,7 @@ const IconSet = ({
                                         color="#ff9900" 
                                         style={styles.shadow} 
                                     />
-                                    <Text center color="#ff9900">{link.likes.length}</Text>
+                                    <Text center color="#ff9900">{link?.likes?.length}</Text>
                                 </TouchableOpacity>
                             )
                         }
@@ -99,6 +102,12 @@ const IconSet = ({
 
                         <View style={{ alignItems: "center" }}>
                             <FontAwesome5Icon 
+                                onPress={() => 
+                                    navigation.navigate("Profile", {
+                                        name: link.postedBy?.name,
+                                        _id: link.postedBy?._id,
+                                    })
+                                }
                                 name='user' 
                                 size={25} 
                                 color="#ff9900" 

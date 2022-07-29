@@ -89,6 +89,11 @@ const Account = ({ navigation }) => {
     alert("Profile image saved");
   }
 
+  const signOut = async () => {
+    setState({ user: null, token: "" });
+    await AsyncStorage.removeItem("@auth");
+  }
+
   return (
     <KeyboardAwareScrollView 
       contentContainerStyle={{
@@ -159,6 +164,11 @@ const Account = ({ navigation }) => {
           title="Update Password" 
           handleSubmit={handleSubmit} 
           loading={loading}
+        />
+
+        <SubmitButton 
+          title="Sign Out" 
+          handleSubmit={signOut}
         />
         {/* <Text>{JSON.stringify({ name, email, password }, null, 4)}</Text> */}
       </View>

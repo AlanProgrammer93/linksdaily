@@ -10,6 +10,9 @@ import Links from '../../screens/Links';
 import ForgotPassword from '../../screens/ForgotPassword';
 import PostLink from '../../screens/PostLink';
 import LinkView from '../../screens/LinkView';
+import Profile from '../../screens/Profile';
+import { TabRouter } from '@react-navigation/native';
+import TrendingLinks from '../../screens/TrendingLinks';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +61,25 @@ export default function ScreensNav() {
                     component={LinkView}  
                     options={{
                         title: "",
+                    }}
+                />
+                <Stack.Screen 
+                    name="Profile" 
+                    component={Profile} 
+                    options={({ route }) => ({
+                        title: route.params?.name || "",
+                        // headerShown: false,
+                        headerTransparent: true,
+                        headerBackTitle: "",
+                    })} 
+                />
+                <Stack.Screen 
+                    name="TrendingLinks" 
+                    component={TrendingLinks}  
+                    options={{
+                        title: "",
+                        headerTransparent: true,
+                        headerBackTitle: ""
                     }}
                 />
                 </>
